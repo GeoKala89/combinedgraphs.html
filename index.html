@@ -136,4 +136,49 @@
                 data: [POL_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'polStack
+                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 50, // <-- FIXED
+            }
+        ]
+    };
+
+    const polConfig = {
+        type: 'bar', options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: {
+                    min: 0, max: POL_MAX_SCALE, stacked: true, 
+                    ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
+                    title: { display: true, text: 'Persuasion Uplift (×)' }
+                },
+                y: { grid: { display: false } }
+            },
+            plugins: {
+                title: { display: true, text: 'AI Red-Line: Political Manipulation Risk' },
+                legend: { display: false },
+                annotation: {
+                    annotations: {
+                        redLine: {
+                            type: 'line', mode: 'vertical', scaleID: 'x', value: POL_RED_LINE_THRESHOLD, 
+                            borderColor: 'red', borderWidth: 4,
+                            label: {
+                                enabled: true, content: '3.0×', position: 'end', 
+                                backgroundColor: 'transparent', color: 'red', font: { weight: 'bold' }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // --- Initialize both charts upon window load ---
+    window.onload = function() {
+        const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
+        new Chart(cbrnCtx, cbrnConfig);
+
+        const polCtx = document.getElementById('politicalChart').getContext('2d');
+        new Chart(polCtx, polConfig);
+    };
+</script>
+</body>
+</html>
