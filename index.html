@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Red-Line Trackers (Minimal Separation)</title>
+    <title>AI Red-Line Trackers (Vertical Display)</title>
+    <!-- Include Chart.js and Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.2.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
@@ -15,7 +16,7 @@
         /* Chart Box Style: Standard block for clean separation */
         .chart-box {
             width: 800px; /* Fixed width for consistent look */
-            margin: 20px auto; /* Centers the box */
+            margin: 10px auto; /* MINIMAL VERTICAL MARGIN */
             padding: 25px;
             background-color: white;
             border: 1px solid #ddd;
@@ -23,27 +24,30 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- CRITICAL: MINIMAL SEPARATOR STYLE --- */
+        /* --- MINIMAL SEPARATOR STYLE --- */
         hr.minimal-separator {
             border: 0;
             height: 1px; /* Very thin line */
             background-color: #ccc; /* Light gray color */
             width: 800px;
-            margin: 40px auto; /* Small vertical spacing */
+            margin: 10px auto; /* MINIMAL VERTICAL MARGIN */
         }
     </style>
 </head>
 <body>
 
-    <h1 style="margin-bottom: 30px;">AI Red-Line Capability Trackers</h1>
+    <h1 style="margin-bottom: 20px;">AI Red-Line Capability Trackers</h1>
 
+    <!-- --- CHART 1: CBRN Refusal/Safe Completion Rate (Green) --- -->
     <div class="chart-box">
         <h2>1. CBRN Risk – Refusal / Safe Completion Rate</h2>
         <canvas id="cbrnChart"></canvas>
     </div>
 
+    <!-- --- MINIMAL VISUAL SEPARATOR --- -->
     <hr class="minimal-separator">
 
+    <!-- --- CHART 2: Political Manipulation Risk (Orange) --- -->
     <div class="chart-box">
         <h2>2. Political Manipulation Risk – Persuasion Uplift</h2>
         <canvas id="politicalChart"></canvas>
@@ -171,7 +175,6 @@
 
     // --- Initialize both charts upon window load ---
     window.onload = function() {
-        // Find the canvas elements and run the configurations
         const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
         new Chart(cbrnCtx, cbrnConfig);
 
