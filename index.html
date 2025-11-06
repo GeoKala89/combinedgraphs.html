@@ -1,41 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Combined AI Red-Line Visualizations</title>
+    <title>1. CBRN Risk – Refusal / Safe Completion Rate</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.2.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .chart-container {
-            width: 800px; /* Standard chart width */
-            margin: 50px auto 70px auto; /* Add space between charts */
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
+        .chart-container { width: 800px; margin: 20px auto; padding: 10px; }
     </style>
 </head>
 <body>
-
-    <h1 style="text-align: center;">AI Red-Line Trackers</h1>
-
-    <div class="chart-container">
-        <h2>1. CBRN Risk – Refusal / Safe Completion Rate</h2>
-        <canvas id="cbrnChart"></canvas>
-    </div>
-
-    <div class="chart-container">
-        <h2>2. Political Manipulation Risk – Persuasion Uplift</h2>
-        <canvas id="politicalChart"></canvas>
-    </div>
+<div class="chart-container">
+    <h2>1. CBRN Risk – Refusal / Safe Completion Rate</h2>
+    <canvas id="cbrnChart"></canvas>
+</div>
 
 <script>
-    // =================================================================
-    //  CHART 1: CBRN Refusal/Safe Completion Rate (Green Bar, 95% fill, Red Line at 90%)
-    // =================================================================
-    
     const CBRN_RED_LINE_THRESHOLD = 0.90; 
     const CBRN_BASELINE_SCORE = 0.95;    
     const CBRN_GREEN_BAR_FILL = CBRN_BASELINE_SCORE;      
@@ -45,38 +24,27 @@
         labels: ['CBRN Refusal/Safe Completion Rate'],
         datasets: [
             {
-                label: 'Baseline Safe Zone',
+                label: 'Baseline Safe Zone (95%)',
                 data: [CBRN_GREEN_BAR_FILL], 
-                backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
-                type: 'bar',
-                stack: 'cbrnStack',
-                barThickness: 50,
+                backgroundColor: 'rgba(75, 192, 192, 0.8)', 
+                type: 'bar', stack: 'cbrnStack', barThickness: 50,
             },
             {
-                label: 'Unachieved Gap',
+                label: 'Unachieved Gap (100%)',
                 data: [CBRN_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1,
-                type: 'bar',
-                stack: 'cbrnStack',
-                barThickness: 50,
+                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50,
             }
         ]
     };
 
     const cbrnConfig = {
-        type: 'bar', 
-        data: cbrnChartData,
-        options: {
-            indexAxis: 'y', 
-            responsive: true,
-            maintainAspectRatio: false,
+        type: 'bar', options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
             scales: {
                 x: {
-                    min: 0,
-                    max: 1.00,
-                    stacked: true, 
+                    min: 0, max: 1.00, stacked: true, 
                     ticks: { callback: function(value) { return (value * 100).toFixed(0) + '%'; } },
                     title: { display: true, text: 'Safe Completion Rate' }
                 },
@@ -101,89 +69,11 @@
         }
     };
 
-
-    // =================================================================
-    //  CHART 2: Political Manipulation Risk (Orange Bar, 2.0x fill, Red Line at 3.0x)
-    // =================================================================
-
-    const POL_RED_LINE_THRESHOLD = 3.0; 
-    const POL_CURRENT_EVIDENCE = 2.0;    
-    const POL_MAX_SCALE = 4.0;          
-    
-    const POL_ORANGE_BAR_FILL = POL_CURRENT_EVIDENCE;       
-    const POL_TRANSPARENT_GAP = POL_MAX_SCALE - POL_CURRENT_EVIDENCE; 
-
-    const polChartData = {
-        labels: ['Political Manipulation Risk – Persuasion Uplift'],
-        datasets: [
-            {
-                label: 'Current Evidence Uplift',
-                data: [POL_ORANGE_BAR_FILL], 
-                backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
-                type: 'bar',
-                stack: 'polStack',
-                barThickness: 50,
-            },
-            {
-                label: 'Unachieved Gap',
-                data: [POL_TRANSPARENT_GAP], 
-                backgroundColor: 'rgba(0, 0, 0, 0)', 
-                borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1,
-                type: 'bar',
-                stack: 'polStack',
-                barThickness: 50,
-            }
-        ]
-    };
-
-    const polConfig = {
-        type: 'bar', 
-        data: polChartData,
-        options: {
-            indexAxis: 'y', 
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    min: 0,
-                    max: POL_MAX_SCALE,
-                    stacked: true, 
-                    ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
-                    title: { display: true, text: 'Persuasion Uplift (×)' }
-                },
-                y: { grid: { display: false } }
-            },
-            plugins: {
-                title: { display: true, text: 'AI Red-Line: Political Manipulation Risk' },
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        redLine: {
-                            type: 'line', mode: 'vertical', scaleID: 'x', value: POL_RED_LINE_THRESHOLD, 
-                            borderColor: 'red', borderWidth: 4,
-                            label: {
-                                enabled: true, content: '(3.0×)', position: 'end', 
-                                backgroundColor: 'transparent', borderColor: 'transparent', color: 'red', font: { weight: 'bold' }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    // --- Initialize both charts upon window load ---
     window.onload = function() {
-        // Initialize CBRN Chart (using canvas ID 'cbrnChart')
         const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
         new Chart(cbrnCtx, cbrnConfig);
-
-        // Initialize Political Risk Chart (using canvas ID 'politicalChart')
-        const polCtx = document.getElementById('politicalChart').getContext('2d');
-        new Chart(polCtx, polConfig);
     };
 </script>
-
 </body>
+</html>
 </html>
