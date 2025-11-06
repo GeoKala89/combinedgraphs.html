@@ -1,61 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Red-Line Trackers (Vertical Display)</title>
-    <!-- Include Chart.js and Annotation Plugin -->
+    <title>AI Red-Line Trackers (Final Vertical Display)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.2.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: white; /* Match the pure white background of the screenshots */
             padding: 20px;
+            text-align: center; /* Center everything */
         }
-        h1, h2 { text-align: center; }
         
-        /* Chart Box Style: Standard block for clean separation */
-        .chart-box {
-            width: 800px; /* Fixed width for consistent look */
-            margin: 10px auto; /* MINIMAL VERTICAL MARGIN */
-            padding: 25px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Container for each individual graph */
+        .chart-container {
+            width: 800px; /* Consistent width */
+            margin: 15px auto; /* Minimal vertical spacing between chart and separator */
         }
 
         /* --- MINIMAL SEPARATOR STYLE --- */
         hr.minimal-separator {
             border: 0;
             height: 1px; /* Very thin line */
-            background-color: #ccc; /* Light gray color */
+            background-color: #eee; /* Extremely light gray separator */
             width: 800px;
-            margin: 10px auto; /* MINIMAL VERTICAL MARGIN */
+            margin: 30px auto; /* Small vertical margin for clear break */
         }
     </style>
 </head>
 <body>
 
-    <h1 style="margin-bottom: 20px;">AI Red-Line Capability Trackers</h1>
-
-    <!-- --- CHART 1: CBRN Refusal/Safe Completion Rate (Green) --- -->
-    <div class="chart-box">
-        <h2>1. CBRN Risk – Refusal / Safe Completion Rate</h2>
+    <div class="chart-container">
         <canvas id="cbrnChart"></canvas>
     </div>
 
-    <!-- --- MINIMAL VISUAL SEPARATOR --- -->
     <hr class="minimal-separator">
 
-    <!-- --- CHART 2: Political Manipulation Risk (Orange) --- -->
-    <div class="chart-box">
-        <h2>2. Political Manipulation Risk – Persuasion Uplift</h2>
+    <div class="chart-container">
         <canvas id="politicalChart"></canvas>
     </div>
 
 <script>
     // =================================================================
-    //  DATA AND CONFIGURATION FOR CHART 1: CBRN Risk
+    //  CHART 1 CONFIGURATION (CBRN)
     // =================================================================
     
     const CBRN_RED_LINE_THRESHOLD = 0.90; 
@@ -64,7 +51,7 @@
     const CBRN_TRANSPARENT_GAP = 1.00 - CBRN_BASELINE_SCORE; 
 
     const cbrnChartData = {
-        labels: ['Refusal / Safe Completion Rate'],
+        labels: ['CBRN Refusal/Safe Completion Rate'],
         datasets: [
             {
                 label: 'Baseline Safe Zone',
@@ -89,12 +76,12 @@
                 x: {
                     min: 0, max: 1.00, stacked: true, 
                     ticks: { callback: function(value) { return (value * 100).toFixed(0) + '%'; } },
-                    title: { display: false }
+                    title: { display: true, text: 'Safe Completion Rate' }
                 },
                 y: { grid: { display: false } }
             },
             plugins: {
-                title: { display: true, text: 'CBRN Refusal / Safe Completion Rate' },
+                title: { display: true, text: 'AI Red-Line: CBRN Refusal / Safe Completion Rate' },
                 legend: { display: false },
                 annotation: {
                     annotations: {
@@ -114,7 +101,7 @@
 
 
     // =================================================================
-    //  DATA AND CONFIGURATION FOR CHART 2: Political Manipulation Risk
+    //  CHART 2 CONFIGURATION (Political Uplift)
     // =================================================================
 
     const POL_RED_LINE_THRESHOLD = 3.0; 
@@ -125,7 +112,7 @@
     const POL_TRANSPARENT_GAP = POL_MAX_SCALE - POL_CURRENT_EVIDENCE; 
 
     const polChartData = {
-        labels: ['Persuasion Uplift'], 
+        labels: ['Political Manipulation Risk – Persuasion Uplift'], 
         datasets: [
             {
                 label: 'Current Evidence Uplift (2.0x)',
@@ -150,7 +137,7 @@
                 x: {
                     min: 0, max: POL_MAX_SCALE, stacked: true, 
                     ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
-                    title: { display: false }
+                    title: { display: true, text: 'Persuasion Uplift (×)' }
                 },
                 y: { grid: { display: false } }
             },
@@ -175,6 +162,7 @@
 
     // --- Initialize both charts upon window load ---
     window.onload = function() {
+        // Find the canvas elements and run the configurations
         const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
         new Chart(cbrnCtx, cbrnConfig);
 
