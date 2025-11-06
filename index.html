@@ -30,7 +30,7 @@
             height: 1px; 
             background-color: #ccc; 
             width: 800px;
-            margin: 20px auto; /* Slightly more space for visual break */
+            margin: 20px auto; 
         }
     </style>
 </head>
@@ -62,20 +62,20 @@
     const CBRN_TRANSPARENT_GAP = 1.00 - CBRN_BASELINE_SCORE; 
 
     const cbrnChartData = {
-        labels: ['CBRN Refusal/Safe Completion Rate'], // Long label restored
+        labels: ['CBRN Refusal/Safe Completion Rate'], 
         datasets: [
             {
                 label: 'Baseline Safe Zone',
                 data: [CBRN_GREEN_BAR_FILL], 
                 backgroundColor: 'rgba(75, 192, 192, 0.8)', 
-                type: 'bar', stack: 'cbrnStack', barThickness: 50, // <-- THICKNESS RESTORED
+                type: 'bar', stack: 'cbrnStack', barThickness: 50, // <-- FIXED
             },
             {
                 label: 'Unachieved Gap',
                 data: [CBRN_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50,
+                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50, // <-- FIXED
             }
         ]
     };
@@ -101,4 +101,39 @@
                             borderColor: 'red', borderWidth: 4,
                             label: {
                                 enabled: true, content: '90%', position: 'end',
-                                backgroundColor:
+                                backgroundColor: 'transparent', borderColor: 'transparent', color: 'red', font: { weight: 'bold' }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+
+    // =================================================================
+    //  CHART 2 CONFIGURATION (Political Uplift) - ORANGE BAR 2.0x
+    // =================================================================
+
+    const POL_RED_LINE_THRESHOLD = 3.0; 
+    const POL_CURRENT_EVIDENCE = 2.0;    
+    const POL_MAX_SCALE = 4.0;          
+    
+    const POL_ORANGE_BAR_FILL = POL_CURRENT_EVIDENCE;       
+    const POL_TRANSPARENT_GAP = POL_MAX_SCALE - POL_CURRENT_EVIDENCE; 
+
+    const polChartData = {
+        labels: ['Political Manipulation Risk – Persuasion Uplift'], 
+        datasets: [
+            {
+                label: 'Current Evidence Uplift (2.0x)',
+                data: [POL_ORANGE_BAR_FILL], 
+                backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
+                type: 'bar', stack: 'polStack', barThickness: 50, // <-- FIXED
+            },
+            {
+                label: 'Unachieved Gap (4.0x)',
+                data: [POL_TRANSPARENT_GAP], 
+                backgroundColor: 'rgba(0, 0, 0, 0)', 
+                borderColor: 'rgba(0, 0, 0, 0.1)',   
+                borderWidth: 1, type: 'bar', stack: 'polStack
