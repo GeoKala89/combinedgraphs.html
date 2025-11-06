@@ -2,47 +2,58 @@
 <html>
 <head>
     <title>AI Red-Line Trackers (Final Vertical Display)</title>
+    <!-- Include Chart.js and Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.2.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: white; /* Match the pure white background of the screenshots */
+            background-color: white; 
             padding: 20px;
-            text-align: center; /* Center everything */
+            text-align: center; 
         }
+        h1, h2 { text-align: center; }
         
-        /* Container for each individual graph */
-        .chart-container {
-            width: 800px; /* Consistent width */
-            margin: 15px auto; /* Minimal vertical spacing between chart and separator */
+        /* Chart Box Style: Standard block for clean separation */
+        .chart-box {
+            width: 800px; 
+            margin: 10px auto; 
+            padding: 25px;
+            background-color: white;
+            border: 1px solid #ddd; /* Added a subtle border for separation */
+            border-radius: 8px;
         }
 
         /* --- MINIMAL SEPARATOR STYLE --- */
         hr.minimal-separator {
             border: 0;
-            height: 1px; /* Very thin line */
-            background-color: #eee; /* Extremely light gray separator */
+            height: 1px; 
+            background-color: #ccc; 
             width: 800px;
-            margin: 30px auto; /* Small vertical margin for clear break */
+            margin: 20px auto; /* Slightly more space for visual break */
         }
     </style>
 </head>
 <body>
 
-    <div class="chart-container">
+    <h1 style="margin-bottom: 30px;">AI Red-Line Capability Trackers</h1>
+
+    <!-- --- CHART 1: CBRN Refusal/Safe Completion Rate (Green) --- -->
+    <div class="chart-box">
         <canvas id="cbrnChart"></canvas>
     </div>
 
+    <!-- --- MINIMAL VISUAL SEPARATOR --- -->
     <hr class="minimal-separator">
 
-    <div class="chart-container">
+    <!-- --- CHART 2: Political Manipulation Risk (Orange) --- -->
+    <div class="chart-box">
         <canvas id="politicalChart"></canvas>
     </div>
 
 <script>
     // =================================================================
-    //  CHART 1 CONFIGURATION (CBRN)
+    //  CHART 1 CONFIGURATION (CBRN) - GREEN BAR 95%
     // =================================================================
     
     const CBRN_RED_LINE_THRESHOLD = 0.90; 
@@ -51,20 +62,20 @@
     const CBRN_TRANSPARENT_GAP = 1.00 - CBRN_BASELINE_SCORE; 
 
     const cbrnChartData = {
-        labels: ['CBRN Refusal/Safe Completion Rate'],
+        labels: ['CBRN Refusal/Safe Completion Rate'], // Long label restored
         datasets: [
             {
                 label: 'Baseline Safe Zone',
                 data: [CBRN_GREEN_BAR_FILL], 
                 backgroundColor: 'rgba(75, 192, 192, 0.8)', 
-                type: 'bar', stack: 'cbrnStack', barThickness: 25,
+                type: 'bar', stack: 'cbrnStack', barThickness: 50, // <-- THICKNESS RESTORED
             },
             {
                 label: 'Unachieved Gap',
                 data: [CBRN_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 25,
+                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50,
             }
         ]
     };
@@ -89,86 +100,5 @@
                             type: 'line', mode: 'vertical', scaleID: 'x', value: CBRN_RED_LINE_THRESHOLD, 
                             borderColor: 'red', borderWidth: 4,
                             label: {
-                                enabled: true, content: '(90%)', position: 'end',
-                                backgroundColor: 'transparent', borderColor: 'transparent', color: 'red', font: { weight: 'bold' }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-
-    // =================================================================
-    //  CHART 2 CONFIGURATION (Political Uplift)
-    // =================================================================
-
-    const POL_RED_LINE_THRESHOLD = 3.0; 
-    const POL_CURRENT_EVIDENCE = 2.0;    
-    const POL_MAX_SCALE = 4.0;          
-    
-    const POL_ORANGE_BAR_FILL = POL_CURRENT_EVIDENCE;       
-    const POL_TRANSPARENT_GAP = POL_MAX_SCALE - POL_CURRENT_EVIDENCE; 
-
-    const polChartData = {
-        labels: ['Political Manipulation Risk – Persuasion Uplift'], 
-        datasets: [
-            {
-                label: 'Current Evidence Uplift (2.0x)',
-                data: [POL_ORANGE_BAR_FILL], 
-                backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
-                type: 'bar', stack: 'polStack', barThickness: 25,
-            },
-            {
-                label: 'Unachieved Gap (4.0x)',
-                data: [POL_TRANSPARENT_GAP], 
-                backgroundColor: 'rgba(0, 0, 0, 0)', 
-                borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 25,
-            }
-        ]
-    };
-
-    const polConfig = {
-        type: 'bar', options: {
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-            scales: {
-                x: {
-                    min: 0, max: POL_MAX_SCALE, stacked: true, 
-                    ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
-                    title: { display: true, text: 'Persuasion Uplift (×)' }
-                },
-                y: { grid: { display: false } }
-            },
-            plugins: {
-                title: { display: true, text: 'AI Red-Line: Political Manipulation Risk' },
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        redLine: {
-                            type: 'line', mode: 'vertical', scaleID: 'x', value: POL_RED_LINE_THRESHOLD, 
-                            borderColor: 'red', borderWidth: 4,
-                            label: {
-                                enabled: true, content: '(3.0×)', position: 'end', 
-                                backgroundColor: 'transparent', color: 'red', font: { weight: 'bold' }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    // --- Initialize both charts upon window load ---
-    window.onload = function() {
-        // Find the canvas elements and run the configurations
-        const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
-        new Chart(cbrnCtx, cbrnConfig);
-
-        const polCtx = document.getElementById('politicalChart').getContext('2d');
-        new Chart(polCtx, polConfig);
-    };
-</script>
-</body>
-</html>
+                                enabled: true, content: '90%', position: 'end',
+                                backgroundColor:
