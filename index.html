@@ -10,24 +10,38 @@
             background-color: #f4f4f4;
             padding: 20px;
         }
-        /* --- CRITICAL CHANGE: FLEX CONTAINER FOR INDEPENDENT PLACEMENT --- */
+        h2 {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee; /* Subtle separator line */
+            padding-bottom: 5px;
+        }
+        /* --- CRITICAL: FLEX CONTAINER FOR HORIZONTAL LAYOUT --- */
         .dashboard-container {
             display: flex;
-            justify-content: center; /* Centers the whole container */
-            gap: 80px; /* Provides a clear, large gap between the two graphs */
+            justify-content: center; /* Centers the two boxes */
+            gap: 40px; /* Gap between the two boxes */
             align-items: flex-start; 
             flex-wrap: nowrap;
             width: 100%;
-            max-width: 1700px;
-            margin: 0 auto;
+            max-width: 1200px; /* Appropriate width for two side-by-side items */
+            margin: 20px auto;
         }
         .chart-box {
-            width: 45%; /* Each box takes a set amount of space */
+            width: 48%; /* Each box takes slightly less than half the space */
             padding: 15px;
             background-color: white;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Style for the small metric value */
+        .metric-value {
+            font-weight: bold;
+            color: #1a73e8; /* Blue color for current value */
+            font-size: 1.1em;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -38,18 +52,20 @@
     <div class="dashboard-container">
         
         <div class="chart-box">
-            <h2>1. CBRN Risk – Refusal / Safe Completion Rate</h2>
+            <h2>CBRN Risk</h2>
+            <div class="metric-value">Baseline: 95% Safe Completion Rate</div>
             <canvas id="cbrnChart"></canvas>
         </div>
 
         <div class="chart-box">
-            <h2>2. Political Manipulation Risk – Persuasion Uplift</h2>
+            <h2>Political Manipulation Risk</h2>
+            <div class="metric-value">Current Evidence: 2.0× Persuasion Uplift</div>
             <canvas id="politicalChart"></canvas>
         </div>
 
     </div> <script>
     // =================================================================
-    //  CHART 1: CBRN Refusal/Safe Completion Rate (Green Bar, 95% fill, Red Line at 90%)
+    //  CHART 1: CBRN Refusal/Safe Completion Rate 
     // =================================================================
     
     const CBRN_RED_LINE_THRESHOLD = 0.90; 
@@ -58,20 +74,20 @@
     const CBRN_TRANSPARENT_GAP = 1.00 - CBRN_BASELINE_SCORE; 
 
     const cbrnChartData = {
-        labels: ['CBRN Refusal/Safe Completion Rate'],
+        labels: ['Refusal / Safe Completion Rate'], // Short label inside graph
         datasets: [
             {
                 label: 'Baseline Safe Zone',
                 data: [CBRN_GREEN_BAR_FILL], 
                 backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
-                type: 'bar', stack: 'cbrnStack', barThickness: 40,
+                type: 'bar', stack: 'cbrnStack', barThickness: 25, /* Reduced thickness for cleaner look */
             },
             {
                 label: 'Unachieved Gap',
                 data: [CBRN_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 40,
+                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 25,
             }
         ]
     };
@@ -83,12 +99,12 @@
                 x: {
                     min: 0, max: 1.00, stacked: true, 
                     ticks: { callback: function(value) { return (value * 100).toFixed(0) + '%'; } },
-                    title: { display: true, text: 'Safe Completion Rate' }
+                    title: { display: false } // Remove axis title to keep it clean
                 },
                 y: { grid: { display: false } }
             },
             plugins: {
-                title: { display: true, text: 'CBRN Refusal / Safe Completion Rate' },
+                title: { display: false },
                 legend: { display: false },
                 annotation: {
                     annotations: {
@@ -96,8 +112,9 @@
                             type: 'line', mode: 'vertical', scaleID: 'x', value: CBRN_RED_LINE_THRESHOLD, 
                             borderColor: 'red', borderWidth: 4,
                             label: {
-                                enabled: true, content: '(90%)', position: 'end',
-                                backgroundColor: 'transparent', borderColor: 'transparent', color: 'red', font: { weight: 'bold' }
+                                enabled: true, content: 'Red Line at 90%', position: 'end',
+                                backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red background for visibility
+                                color: 'red', font: { weight: 'bold' }
                             }
                         }
                     }
@@ -108,7 +125,7 @@
 
 
     // =================================================================
-    //  CHART 2: Political Manipulation Risk (Orange Bar, 2.0x fill, Red Line at 3.0x)
+    //  CHART 2: Political Manipulation Risk
     // =================================================================
 
     const POL_RED_LINE_THRESHOLD = 3.0; 
@@ -119,20 +136,20 @@
     const POL_TRANSPARENT_GAP = POL_MAX_SCALE - POL_CURRENT_EVIDENCE; 
 
     const polChartData = {
-        labels: ['Political Manipulation Risk – Persuasion Uplift'],
+        labels: ['Persuasion Uplift'], // Short label inside graph
         datasets: [
             {
                 label: 'Current Evidence Uplift (2.0x)',
                 data: [POL_ORANGE_BAR_FILL], 
                 backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
-                type: 'bar', stack: 'polStack', barThickness: 40,
+                type: 'bar', stack: 'polStack', barThickness: 25,
             },
             {
                 label: 'Unachieved Gap (4.0x)',
                 data: [POL_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 40,
+                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 25,
             }
         ]
     };
@@ -144,12 +161,12 @@
                 x: {
                     min: 0, max: POL_MAX_SCALE, stacked: true, 
                     ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
-                    title: { display: true, text: 'Persuasion Uplift (×)' }
+                    title: { display: false } // Remove axis title to keep it clean
                 },
                 y: { grid: { display: false } }
             },
             plugins: {
-                title: { display: true, text: 'AI Red-Line: Political Manipulation Risk' },
+                title: { display: false },
                 legend: { display: false },
                 annotation: {
                     annotations: {
@@ -157,5 +174,5 @@
                             type: 'line', mode: 'vertical', scaleID: 'x', value: POL_RED_LINE_THRESHOLD, 
                             borderColor: 'red', borderWidth: 4,
                             label: {
-                                enabled: true, content: '(3.0×)', position: 'end',
-</html>
+                                enabled: true, content: 'Red Line at 3.0×', position: 'end', 
+                                backgroundColor: 'rgba(255, 0, 0, 0.1
