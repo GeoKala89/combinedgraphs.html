@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>AI Red-Line Trackers (Final Vertical Display)</title>
-    <!-- Include Chart.js and Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.2.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
@@ -20,7 +19,7 @@
             margin: 10px auto; 
             padding: 25px;
             background-color: white;
-            border: 1px solid #ddd; /* Added a subtle border for separation */
+            border: 1px solid #ddd; 
             border-radius: 8px;
         }
 
@@ -38,15 +37,12 @@
 
     <h1 style="margin-bottom: 30px;">AI Red-Line Capability Trackers</h1>
 
-    <!-- --- CHART 1: CBRN Refusal/Safe Completion Rate (Green) --- -->
     <div class="chart-box">
         <canvas id="cbrnChart"></canvas>
     </div>
 
-    <!-- --- MINIMAL VISUAL SEPARATOR --- -->
     <hr class="minimal-separator">
 
-    <!-- --- CHART 2: Political Manipulation Risk (Orange) --- -->
     <div class="chart-box">
         <canvas id="politicalChart"></canvas>
     </div>
@@ -67,15 +63,20 @@
             {
                 label: 'Baseline Safe Zone',
                 data: [CBRN_GREEN_BAR_FILL], 
-                backgroundColor: 'rgba(75, 192, 192, 0.8)', 
-                type: 'bar', stack: 'cbrnStack', barThickness: 50, // <-- FIXED
+                backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
+                type: 'bar', 
+                stack: 'cbrnStack', 
+                barThickness: 50, // Corrected thickness
             },
             {
                 label: 'Unachieved Gap',
                 data: [CBRN_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50, // <-- FIXED
+                borderWidth: 1, 
+                type: 'bar', 
+                stack: 'cbrnStack', 
+                barThickness: 50,
             }
         ]
     };
@@ -129,14 +130,19 @@
                 label: 'Current Evidence Uplift (2.0x)',
                 data: [POL_ORANGE_BAR_FILL], 
                 backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
-                type: 'bar', stack: 'polStack', barThickness: 50, // <-- FIXED
+                type: 'bar', 
+                stack: 'polStack', 
+                barThickness: 50, // Corrected thickness
             },
             {
                 label: 'Unachieved Gap (4.0x)',
                 data: [POL_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 50, // <-- FIXED
+                borderWidth: 1, 
+                type: 'bar', 
+                stack: 'polStack', 
+                barThickness: 50,
             }
         ]
     };
