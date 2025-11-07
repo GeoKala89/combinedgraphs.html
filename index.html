@@ -63,20 +63,15 @@
             {
                 label: 'Baseline Safe Zone',
                 data: [CBRN_GREEN_BAR_FILL], 
-                backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
-                type: 'bar', 
-                stack: 'cbrnStack', 
-                barThickness: 50, // Corrected thickness
+                backgroundColor: 'rgba(75, 192, 192, 0.8)', 
+                type: 'bar', stack: 'cbrnStack', barThickness: 50,
             },
             {
                 label: 'Unachieved Gap',
                 data: [CBRN_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, 
-                type: 'bar', 
-                stack: 'cbrnStack', 
-                barThickness: 50,
+                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50,
             }
         ]
     };
@@ -84,6 +79,10 @@
     const cbrnConfig = {
         type: 'bar', options: {
             indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            // --- FIX FOR BAR VISIBILITY ---
+            barPercentage: 1.0, 
+            categoryPercentage: 1.0, 
+            // -----------------------------
             scales: {
                 x: {
                     min: 0, max: 1.00, stacked: true, 
@@ -130,19 +129,14 @@
                 label: 'Current Evidence Uplift (2.0x)',
                 data: [POL_ORANGE_BAR_FILL], 
                 backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
-                type: 'bar', 
-                stack: 'polStack', 
-                barThickness: 50, // Corrected thickness
+                type: 'bar', stack: 'polStack', barThickness: 50, 
             },
             {
                 label: 'Unachieved Gap (4.0x)',
                 data: [POL_TRANSPARENT_GAP], 
                 backgroundColor: 'rgba(0, 0, 0, 0)', 
                 borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, 
-                type: 'bar', 
-                stack: 'polStack', 
-                barThickness: 50,
+                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 50,
             }
         ]
     };
@@ -150,41 +144,12 @@
     const polConfig = {
         type: 'bar', options: {
             indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            // --- FIX FOR BAR VISIBILITY ---
+            barPercentage: 1.0, 
+            categoryPercentage: 1.0,
+            // -----------------------------
             scales: {
                 x: {
                     min: 0, max: POL_MAX_SCALE, stacked: true, 
                     ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
-                    title: { display: true, text: 'Persuasion Uplift (×)' }
-                },
-                y: { grid: { display: false } }
-            },
-            plugins: {
-                title: { display: true, text: 'AI Red-Line: Political Manipulation Risk' },
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        redLine: {
-                            type: 'line', mode: 'vertical', scaleID: 'x', value: POL_RED_LINE_THRESHOLD, 
-                            borderColor: 'red', borderWidth: 4,
-                            label: {
-                                enabled: true, content: '3.0×', position: 'end', 
-                                backgroundColor: 'transparent', color: 'red', font: { weight: 'bold' }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    // --- Initialize both charts upon window load ---
-    window.onload = function() {
-        const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
-        new Chart(cbrnCtx, cbrnConfig);
-
-        const polCtx = document.getElementById('politicalChart').getContext('2d');
-        new Chart(polCtx, polConfig);
-    };
-</script>
-</body>
-</html>
+                    title: { display: true, text: 'Persuasion Uplift (×
