@@ -54,102 +54,21 @@
     
     const CBRN_RED_LINE_THRESHOLD = 0.90; 
     const CBRN_BASELINE_SCORE = 0.95;    
-    const CBRN_GREEN_BAR_FILL = CBRN_BASELINE_SCORE;      
-    const CBRN_TRANSPARENT_GAP = 1.00 - CBRN_BASELINE_SCORE; 
 
     const cbrnChartData = {
         labels: ['CBRN Refusal/Safe Completion Rate'], 
         datasets: [
             {
                 label: 'Baseline Safe Zone',
-                data: [CBRN_GREEN_BAR_FILL], 
-                backgroundColor: 'rgba(75, 192, 192, 0.8)', 
-                type: 'bar', stack: 'cbrnStack', barThickness: 50,
-            },
-            {
-                label: 'Unachieved Gap',
-                data: [CBRN_TRANSPARENT_GAP], 
-                backgroundColor: 'rgba(0, 0, 0, 0)', 
-                borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'cbrnStack', barThickness: 50,
+                data: [CBRN_BASELINE_SCORE], // Only the fill value is needed for the bar
+                backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
+                type: 'bar', 
+                barThickness: 50,
             }
+            // Removed transparent gap series for simplicity and visibility fix
         ]
     };
 
     const cbrnConfig = {
         type: 'bar', options: {
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-            // --- FIX FOR BAR VISIBILITY ---
-            barPercentage: 1.0, 
-            categoryPercentage: 1.0, 
-            // -----------------------------
-            scales: {
-                x: {
-                    min: 0, max: 1.00, stacked: true, 
-                    ticks: { callback: function(value) { return (value * 100).toFixed(0) + '%'; } },
-                    title: { display: true, text: 'Safe Completion Rate' }
-                },
-                y: { grid: { display: false } }
-            },
-            plugins: {
-                title: { display: true, text: 'AI Red-Line: CBRN Refusal / Safe Completion Rate' },
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        redLine: {
-                            type: 'line', mode: 'vertical', scaleID: 'x', value: CBRN_RED_LINE_THRESHOLD, 
-                            borderColor: 'red', borderWidth: 4,
-                            label: {
-                                enabled: true, content: '90%', position: 'end',
-                                backgroundColor: 'transparent', borderColor: 'transparent', color: 'red', font: { weight: 'bold' }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-
-    // =================================================================
-    //  CHART 2 CONFIGURATION (Political Uplift) - ORANGE BAR 2.0x
-    // =================================================================
-
-    const POL_RED_LINE_THRESHOLD = 3.0; 
-    const POL_CURRENT_EVIDENCE = 2.0;    
-    const POL_MAX_SCALE = 4.0;          
-    
-    const POL_ORANGE_BAR_FILL = POL_CURRENT_EVIDENCE;       
-    const POL_TRANSPARENT_GAP = POL_MAX_SCALE - POL_CURRENT_EVIDENCE; 
-
-    const polChartData = {
-        labels: ['Political Manipulation Risk – Persuasion Uplift'], 
-        datasets: [
-            {
-                label: 'Current Evidence Uplift (2.0x)',
-                data: [POL_ORANGE_BAR_FILL], 
-                backgroundColor: 'rgba(255, 165, 0, 0.8)', // Orange fill
-                type: 'bar', stack: 'polStack', barThickness: 50, 
-            },
-            {
-                label: 'Unachieved Gap (4.0x)',
-                data: [POL_TRANSPARENT_GAP], 
-                backgroundColor: 'rgba(0, 0, 0, 0)', 
-                borderColor: 'rgba(0, 0, 0, 0.1)',   
-                borderWidth: 1, type: 'bar', stack: 'polStack', barThickness: 50,
-            }
-        ]
-    };
-
-    const polConfig = {
-        type: 'bar', options: {
-            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-            // --- FIX FOR BAR VISIBILITY ---
-            barPercentage: 1.0, 
-            categoryPercentage: 1.0,
-            // -----------------------------
-            scales: {
-                x: {
-                    min: 0, max: POL_MAX_SCALE, stacked: true, 
-                    ticks: { callback: function(value) { return value.toFixed(1) + '×'; } },
-                    title: { display: true, text: 'Persuasion Uplift (×
+            index
