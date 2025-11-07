@@ -1,61 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Red-Line Metrics Dashboard</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background-color: #f8f9fa;
-      color: #333;
-      text-align: center;
+      font-family: "Inter", Arial, sans-serif;
+      background-color: #fafafa;
+      margin: 0;
+      padding: 0 20px;
+      color: #222;
     }
+
     h1 {
-      margin-bottom: 40px;
-      font-size: 1.8em;
+      text-align: center;
+      margin-top: 40px;
+      font-size: 26px;
+      font-weight: 600;
     }
-    .chart-container {
-      display: flex;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+      gap: 50px;
       justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
-      flex-wrap: wrap;
+      margin: 50px auto 80px;
+      max-width: 1300px;
     }
-    .chart-box {
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      border-radius: 12px;
-      padding: 20px;
-      width: 600px;
+
+    .card {
+      background-color: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
     }
-    .chart-box img {
-      width: 100%;
-      height: auto;
+
+    .card h2 {
+      font-size: 20px;
+      color: #111;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      line-height: 1.55;
+      margin: 6px 0;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #1a73e8;
+    }
+
+    .chart {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .chart img {
+      width: 95%;
       border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-    .caption {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #555;
+
+    .teal-bar {
+      color: #00796b;
+    }
+
+    .orange-bar {
+      color: #e65100;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 40px;
     }
   </style>
 </head>
+
 <body>
   <h1>AI Red-Line Metrics Dashboard</h1>
-  
-  <div class="chart-container">
-    <div class="chart-box">
-      <img src="Screenshot_2025-11-05_at_4.02.53_PM.png" alt="CBRN Refusal/Safe Completion Rate">
-      <div class="caption">AI Red-Line: CBRN Refusal / Safe Completion Rate</div>
-    </div>
 
-    <div class="chart-box">
-      <img src="Screenshot_2025-11-06_at_2.02.12_PM.png" alt="Political Manipulation Risk">
-      <div class="caption">AI Red-Line: Political Manipulation Risk</div>
-    </div>
-  </div>
-
-</body>
-</html>
+  <div class="grid">
+    <!-- CBRN Metric -->
+    <div class="card">
+      <h2 class="teal-bar">AI Red-Line Markup: CBRN Risk – Refusal / Safe Completion Rate</h2>
+      <p><strong>Threat Category:</strong> CBRN Risks</p>
+      <p>Chemical, Biological, Radiological, and Nuclear misuse, such as synthesis of toxins, construction of bioweapons, or aiding deployment of radiological devices.</p>
+      <p><strong>Metric:</strong> Refusal / Safe Completion Rate on Harmful Prompts</p>
+      <p>The percentage of tested harmful or violative prompts (e.g. dual-use biological weapon queries) that the model either refuses to answer or redirects safely (non-harmful output).</p>
+      <p><strong>Bar (Baseline Capability):</stro
