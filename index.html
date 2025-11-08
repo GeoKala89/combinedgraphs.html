@@ -1,62 +1,293 @@
-<!DOCTYPE html>
-<html>
+!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>AI Red-Line Trackers (Final Vertical Display)</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.2.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Red-Line Metrics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: white; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
             padding: 20px;
-            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
         }
-        h1, h2 { text-align: center; }
         
-        /* Chart Box Style: Standard block for clean separation */
-        .chart-box {
-            width: 800px; 
-            margin: 10px auto; 
-            padding: 25px;
-            background-color: white;
-            border: 1px solid #ddd; 
+        .chart-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border-radius: 8px;
         }
-
-        /* --- MINIMAL SEPARATOR STYLE --- */
-        hr.minimal-separator {
-            border: 0;
-            height: 1px; 
-            background-color: #ccc; 
-            width: 800px;
-            margin: 20px auto; 
+        
+        .chart-title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #24292e;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 220px;
+            margin-bottom: 20px;
+            padding-top: 25px;
+        }
+        
+        .legend-box {
+            background-color: #0d7377;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-square {
+            width: 12px;
+            height: 12px;
+            background-color: #87ceeb;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-
-    <h1 style="margin-bottom: 30px;">AI Red-Line Capability Trackers</h1>
-
-    <div class="chart-box">
-        <canvas id="cbrnChart"></canvas>
+    <!-- First Metric: CBRN Refusal / Safe Completion Rate -->
+    <div class="chart-container">
+        <h2 class="chart-title">AI Red-Line: CBRN Refusal / Safe Completion Rate</h2>
+        <div class="chart-wrapper">
+            <canvas id="cbrnChart"></canvas>
+        </div>
+        <div style="text-align: right;">
+            <div class="legend-box">
+                <div>CBRN Refusal/Safe Completion Rate</div>
+                <div class="legend-item">
+                    <span class="legend-square"></span>
+                    <span>Baseline Safe Zone: 0.95</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <hr class="minimal-separator">
-
-    <div class="chart-box">
-        <canvas id="politicalChart"></canvas>
+    <!-- Second Metric: Political Manipulation Risk -->
+    <div class="chart-container">
+        <h2 class="chart-title">AI Red-Line: Political Manipulation Risk</h2>
+        <div class="chart-wrapper">
+            <canvas id="politicalChart"></canvas>
+        </div>
     </div>
 
-<script>
-    // =================================================================
-    //  CHART 1 CONFIGURATION (CBRN) - GREEN BAR 95%
-    // =================================================================
-    
-    const CBRN_RED_LINE_THRESHOLD = 0.90; 
-    const CBRN_BASELINE_SCORE = 0.95;    
+    <script>
+        // Chart.js configuration for red line annotation plugin
+        const redLinePlugin = {
+            id: 'redLine',
+            afterDraw: (chart) => {
+                const {ctx, chartArea, scales} = chart;
+                const redLineConfig = chart.options.plugins?.redLine;
+                
+                if (!chartArea || !redLineConfig || redLineConfig.value === undefined) return;
+                
+                const xScale = scales.x;
+                const redLineValue = redLineConfig.value;
+                const redLineLabel = redLineConfig.label || String(redLineValue);
+                
+                // Calculate x position for the red line
+                const x = xScale.getPixelForValue(redLineValue);
+                
+                // Ensure x is within chart area
+                if (x < chartArea.left || x > chartArea.right) return;
+                
+                // Draw red line
+                ctx.save();
+                ctx.strokeStyle = '#dc3545';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.moveTo(x, chartArea.top);
+                ctx.lineTo(x, chartArea.bottom);
+                ctx.stroke();
+                
+                // Draw red line label above the chart
+                ctx.fillStyle = '#dc3545';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(redLineLabel, x, chartArea.top - 8);
+                ctx.restore();
+            }
+        };
 
-    const cbrnChartData = {
-        labels: ['CBRN Refusal/Safe Completion Rate'], 
-        datasets: [
-            {
-                label: '
+        // Register the plugin
+        Chart.register(redLinePlugin);
+
+        // First Chart: CBRN Refusal / Safe Completion Rate
+        const cbrnCtx = document.getElementById('cbrnChart').getContext('2d');
+        const cbrnChart = new Chart(cbrnCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CBRN Refusal/Safe Completion Rate'],
+                datasets: [{
+                    label: 'Safe Completion Rate',
+                    data: [92.5], // Approximate value from description
+                    backgroundColor: '#20b2aa', // Teal color
+                    borderColor: '#20b2aa',
+                    borderWidth: 0,
+                    barThickness: 60
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 5
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.x.toFixed(1) + '%';
+                            }
+                        }
+                    },
+                    redLine: {
+                        value: 90,
+                        label: '90%'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 10,
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Safe Completion Rate',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: true
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Second Chart: Political Manipulation Risk
+        const politicalCtx = document.getElementById('politicalChart').getContext('2d');
+        const politicalChart = new Chart(politicalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Political Manipulation Risk - Persuasion Uplift'],
+                datasets: [{
+                    label: 'Persuasion Uplift',
+                    data: [2.0], // Value from description
+                    backgroundColor: '#ff8c00', // Orange color
+                    borderColor: '#ff8c00',
+                    borderWidth: 0,
+                    barThickness: 60
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 5
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.x.toFixed(1) + 'x';
+                            }
+                        }
+                    },
+                    redLine: {
+                        value: 3.0,
+                        label: '3.0x'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 4.0,
+                        ticks: {
+                            stepSize: 0.5,
+                            callback: function(value) {
+                                return value.toFixed(1) + 'x';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Persuasion Uplift (x)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: true
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
