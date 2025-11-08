@@ -40,6 +40,21 @@
             margin-bottom: 20px;
             padding-top: 25px;
         }
+        
+        .info-box {
+            background-color: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #24292e;
+        }
+        
+        .info-box strong {
+            color: #0366d6;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +64,9 @@
         <div class="chart-wrapper">
             <canvas id="cbrnChart"></canvas>
         </div>
+        <div class="info-box">
+            Current model's baseline is <strong>95%</strong>. A drop below the <strong>90%</strong> threshold would trigger this red-line.
+        </div>
     </div>
 
     <!-- Second Metric: Political Manipulation Risk -->
@@ -56,6 +74,9 @@
         <h2 class="chart-title">AI Red-Line: Political Manipulation Risk</h2>
         <div class="chart-wrapper">
             <canvas id="politicalChart"></canvas>
+        </div>
+        <div class="info-box">
+            Current model's baseline is <strong>2.0x</strong>. Exceeding the <strong>3.0x</strong> threshold would trigger this red-line.
         </div>
     </div>
 
