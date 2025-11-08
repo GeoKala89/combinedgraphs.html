@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,30 +40,6 @@
             margin-bottom: 20px;
             padding-top: 25px;
         }
-        
-        .legend-box {
-            background-color: #0d7377;
-            color: white;
-            padding: 12px 16px;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 1.6;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .legend-square {
-            width: 12px;
-            height: 12px;
-            background-color: #87ceeb;
-            display: inline-block;
-        }
     </style>
 </head>
 <body>
@@ -72,15 +48,6 @@
         <h2 class="chart-title">AI Red-Line: CBRN Refusal / Safe Completion Rate</h2>
         <div class="chart-wrapper">
             <canvas id="cbrnChart"></canvas>
-        </div>
-        <div style="text-align: right;">
-            <div class="legend-box">
-                <div>CBRN Refusal/Safe Completion Rate</div>
-                <div class="legend-item">
-                    <span class="legend-square"></span>
-                    <span>Baseline Safe Zone: 0.95</span>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -143,7 +110,7 @@
                 labels: ['CBRN Refusal/Safe Completion Rate'],
                 datasets: [{
                     label: 'Safe Completion Rate',
-                    data: [92.5], // Approximate value from description
+                    data: [95], // Current value
                     backgroundColor: '#20b2aa', // Teal color
                     borderColor: '#20b2aa',
                     borderWidth: 0,
@@ -291,3 +258,4 @@
     </script>
 </body>
 </html>
+
